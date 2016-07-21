@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Email";
+}
+@using SimchaFund.Data;
+@using SimchaFund.Models;
+@model EmailViewModel
+<h1>Contributors to the @Model.Simcha Simcha</h1>
+@{
+    foreach(Contributors c in Model.Contributors)
+    {
+        <p>@c.FirstName @c.LastName</p>
+    }
+    <a class="btn btn-warning" href="#">Send Email</a>
+}

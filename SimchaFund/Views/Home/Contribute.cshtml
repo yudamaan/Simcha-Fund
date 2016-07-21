@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Contribute";
+}
+@using SimchaFund.Data;
+@using SimchaFund.Models;
+@model ContributeViewModel
+           <div class="row">
+               <div class="col-md-4 col-md-offset-4">
+                   <h3>Contributors to the @Model.Simcha.Name Simcha</h3>          
+               </div>
+           </div>
+ <form method="post" action="/Home/AddContribution">
+     <input type="hidden" name="simchaId" value="@Model.Simcha.Id"/>
+    <table class="table table-hover table-striped table-bordered">
+        <tr>
+            <th style="text-align:center;vertical-align:middle;">Contribute</th>
+            <th style="text-align:center;vertical-align:middle;">Contributer Name</th>
+            <th style="text-align:center;vertical-align:middle;">Balance</th>
+            <th style="text-align:center;vertical-align:middle;">Always Include</th>
+            <th style="text-align:center;vertical-align:middle;">Amount</th>
+        </tr>
+        
+        @{
+            int i = 0;
+            foreach (ContributionPageProperties cPP in Model.Contributors)
+            {
+
+                <tr data-contibutor-id="@cPP.Contributer.Id" data-name="@cPP.Contributer.LastName">
+                    @if (cPP.AmountContributed != 0 || cPP.Contributer.AlwaysInclude)
+                    {
+                        <td style="text-align:center;vertical-align:middle;" data-id="@cPP.Contributer.Id"><input type="checkbox" class="checkbox" name="form[@i].Contribute" checked /></td>
+                    }
+                    else
+                    {
+                        <td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="checkbox" name="form[@i].Contribute" /></td>
+                    }
+                    <td style="text-align:center;vertical-align:middle;">@cPP.Contributer.FirstName, @cPP.Contributer.LastName</td>
+                    <td style="text-align:center;vertical-align:middle;">@cPP.Balance.ToString("C")</td>
+                    @if (@cPP.Contributer.AlwaysInclude)
+                    {
+                        <td style="text-align:center;vertical-align:middle;"><span class="glyphicon glyphicon-ok-sign"></span></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (@cPP.AmountContributed == 0)
+                    {
+                        <td style="text-align:center;vertical-align:middle;"><input type="text" class="form-control" name="form[@i].Contribution" value="5.00" /></td>
+                    }
+                    else
+                    {
+
+                        <td style="text-align:center;vertical-align:middle;"><input type="text" class="form-control" name="form[@i].Contribution" value="@cPP.AmountContributed.ToString("G29").00" /></td>
+                    }
+                    <td hidden><input type="hidden" value="@cPP.Contributer.Id" name="form[@i].ContributorId" /> </td>
+                </tr>
+                    i = i + 1;
+
+            }
+
+        }
+        
+    </table>
+     <button>Update</button>
+</form>
+
+@section Scripts
+    {
+   <script src="~/Scripts/ContributePage.js"></script>
+}

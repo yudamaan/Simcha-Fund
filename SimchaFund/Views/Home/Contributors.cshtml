@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Contributers";
+}
+@using SimchaFund.Data;
+@using SimchaFund.Models;
+@model ContributorsViewModel
+<div class="row">
+    <h2 class="col-md-2 col-md-offset-4">Contributors</h2>
+</div>
+<div class="row">
+    <button class="col-md-2 col-md-offset-4 btn btn-primary add">Add Contributors</button>
+</div>
+<br />
+    @*<div class="row">
+        <div>*@
+            <h3 style="text-align:right">Total Balance @Model.TotalBalance.ToString("C")</h3>
+        @*</div>
+    </div>*@
+    <br />
+    <table class="table table-hover table-striped table-bordered">
+        <tr>
+            <th style="text-align:center;vertical-align:middle;">Deposit</th>
+            <th style="text-align:center;vertical-align:middle;">Name</th>
+            <th style="text-align:center;vertical-align:middle;">Phone Number</th>
+            <th style="text-align:center;vertical-align:middle;">Balance</th>
+            <th style="text-align:center;vertical-align:middle;">Always Include</th>
+            <th style="text-align:center;vertical-align:middle;">Actions</th>
+        </tr>
+        @{
+            foreach (ContributorPageProperties cPP in Model.Contributer)
+            {
+                <tr data-contributor-id="@cPP.Contributor.Id">
+                    <td style="text-align:center;vertical-align:middle;"><button class="deposit btn btn-danger">Deposit</button></td>
+                    <td style="text-align:center;vertical-align:middle;" class="name">@cPP.Contributor.FirstName @cPP.Contributor.LastName</td>
+                    <td style="text-align:center;vertical-align:middle;">@cPP.Contributor.PhoneNum</td>
+                    <td style="text-align:center;vertical-align:middle;">@cPP.Balance.ToString("C")</td>
+                    @if (@cPP.Contributor.AlwaysInclude)
+                    {
+                        <td data-always-include="checked" style="text-align:center;vertical-align:middle;"><span class="glyphicon glyphicon-ok-sign"></span></td>
+                    }
+                    else
+                    {
+                        <td data-always-include=""></td>
+                    }
+                    <td>
+                        <a class="btn btn-primary" href="/home/showhistory?contributorId=@cPP.Contributor.Id">Show History</a>
+                        <button class="btn btn-warning edit">Edit</button>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <form method="post">
+        <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @*<input class="form-control" type="text" name="firstName" placeholder="FirstName" />
+                            <input class="form-control" type="text" name="lasttName" placeholder="LastName" />
+                            <input class="form-control" type="text" name="phoneNum" placeholder="Phone Number" />
+                            <input type="checkbox" name="AlwaysInclude" value="true" checked />Always Include*@
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" id="submit">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </form>
+    @section Scripts{
+        <script src="~/Scripts/Contributors.js"></script>
+    }
